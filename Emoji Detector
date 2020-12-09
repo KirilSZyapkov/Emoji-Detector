@@ -1,0 +1,26 @@
+function emojiDetector([input]) {
+    let patternNums = /\d/g;
+    let pattern = /(::|\*\*)(?<name>[A-Z][a-z]{2,})\1/g;
+    let nums = input.match(patternNums);
+    let coolThreshold = nums.map(Number).reduce((a, b) => a * b);
+    console.log(`Cool threshold: ${coolThreshold}`);
+    let listOfEmojis = [];
+    let matches = pattern.exec(input);
+    let numEmojis = 0
+
+    while (matches !== null) {
+        numEmojis++;
+        let word = matches.groups["name"];
+        let cool = 0;
+        for (let a = 0; a < word.length; a++) {
+            let x = word[a].charCodeAt();
+            cool += x;
+        }
+        if (cool >= coolThreshold) {
+            listOfEmojis.push(matches[0]);
+        }
+        matches = pattern.exec(input);
+    }
+    console.log(`${numEmojis} emojis found in the text. The cool ones are:`);
+    listOfEmojis.forEach(element => console.log(element));
+}
